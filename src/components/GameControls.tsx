@@ -43,14 +43,14 @@ export function GameControls({
         </Button>
       )}
       <Button
-        variant="ghost"
+        variant="secondary"
         size="sm"
         onClick={onToggleSound}
         aria-pressed={soundEnabled}
         aria-label={soundEnabled ? 'Win sound on' : 'Win sound off'}
-        title={soundEnabled ? 'Win sound: on' : 'Win sound: off'}
+        title="Play a sound when you win"
       >
-        {soundEnabled ? '🔊' : '🔇'}
+        {soundEnabled ? '🔊 Sound on' : '🔇 Sound off'}
       </Button>
       <Button variant="secondary" onClick={onNewCard}>
         🔄 New Card
