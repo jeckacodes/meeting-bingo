@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CategoryId, GameState, GAME_STATE_VERSION, WinningLine } from './types'
 import { generateCard } from './lib/cardGenerator'
+import { loadGame, saveGame, clearGame } from './hooks/useLocalStorage'
 import { LandingPage } from './components/LandingPage'
 import { CategorySelect } from './components/CategorySelect'
 import { GameBoard } from './components/GameBoard'
@@ -22,8 +23,14 @@ function freshGame(): GameState {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('landing')
-  const [game, setGame] = useState<GameState>(freshGame)
+  // Restore an in-progress game on load (§4 #17). Listening always starts off.
+  const [game, setGame] = useState<GameState>(() => loadGame() ?? freshGame())
+  const [screen, setScreen] = useState<Screen>(() => (loadGame() ? 'game' : 'landing'))
+
+  // Persist in-progress games; non-playing states clear storage.
+  useEffect(() => {
+    saveGame(game)
+  }, [game])
 
   const handleStart = () => setScreen('category')
 
@@ -49,9 +56,13 @@ export default function App() {
     setScreen('win')
   }
 
-  const handlePlayAgain = () => setScreen('category')
+  const handlePlayAgain = () => {
+    clearGame()
+    setScreen('category')
+  }
 
   const handleBackToHome = () => {
+    clearGame()
     setGame(freshGame())
     setScreen('landing')
   }
