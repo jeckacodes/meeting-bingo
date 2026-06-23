@@ -5,9 +5,11 @@ import { countFilled } from '../lib/bingoChecker'
 import { formatDuration } from '../lib/utils'
 import { CATEGORIES } from '../data/categories'
 import { buildShareText, shareResult } from '../lib/shareUtils'
+import { playWinChime } from '../lib/sound'
 import { Button } from './ui/Button'
 import { BingoCard } from './BingoCard'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { useSoundPreference } from '../hooks/useSoundPreference'
 
 interface Props {
   game: GameState
@@ -17,6 +19,7 @@ interface Props {
 
 export function WinScreen({ game, onPlayAgain, onHome }: Props) {
   const reducedMotion = useReducedMotion()
+  const [soundEnabled, toggleSound] = useSoundPreference()
   const [shareMsg, setShareMsg] = useState('')
 
   // Celebrate — confetti unless the user prefers reduced motion (§4 #20). Sound off (UXR Moment 3).
@@ -29,6 +32,12 @@ export function WinScreen({ game, onPlayAgain, onHome }: Props) {
     )
     return () => clearTimeout(t)
   }, [reducedMotion])
+
+  // Opt-in win chime (off by default). Also fires when the user toggles sound
+  // on here, giving an instant preview.
+  useEffect(() => {
+    if (soundEnabled) playWinChime()
+  }, [soundEnabled])
 
   const categoryName = CATEGORIES.find((c) => c.id === game.category)?.name ?? '—'
   const filled = game.card ? countFilled(game.card) : 0
@@ -98,6 +107,14 @@ export function WinScreen({ game, onPlayAgain, onHome }: Props) {
         <Button onClick={onPlayAgain}>Play Again</Button>
         <Button variant="secondary" onClick={handleShare}>
           📤 Share
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={toggleSound}
+          aria-pressed={soundEnabled}
+          aria-label={soundEnabled ? 'Win sound on' : 'Win sound off'}
+        >
+          {soundEnabled ? '🔊 Sound on' : '🔇 Sound off'}
         </Button>
         <Button variant="ghost" onClick={onHome}>
           Home

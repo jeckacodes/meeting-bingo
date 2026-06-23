@@ -10,6 +10,7 @@ import { TranscriptPanel } from './TranscriptPanel'
 import { ToastContainer } from './ui/Toast'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition'
+import { useSoundPreference } from '../hooks/useSoundPreference'
 
 interface Props {
   game: GameState
@@ -21,6 +22,7 @@ const ISNEW_MS = 600 // one-shot auto-fill animation window (§4 #19)
 
 export function GameBoard({ game, setGame, onWin }: Props) {
   const reducedMotion = useReducedMotion()
+  const [soundEnabled, toggleSound] = useSoundPreference()
   const speech = useSpeechRecognition()
   const { isSupported, isListening, transcript, interimTranscript, error } = speech
 
@@ -155,6 +157,8 @@ export function GameBoard({ game, setGame, onWin }: Props) {
           isSpeechSupported={isSupported}
           isListening={isListening}
           onToggleListen={toggleListen}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
         />
       </header>
 

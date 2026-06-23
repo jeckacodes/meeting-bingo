@@ -7,9 +7,19 @@ interface Props {
   isSpeechSupported: boolean
   isListening?: boolean
   onToggleListen?: () => void
+  /** Opt-in win sound (off by default). */
+  soundEnabled: boolean
+  onToggleSound: () => void
 }
 
-export function GameControls({ onNewCard, isSpeechSupported, isListening, onToggleListen }: Props) {
+export function GameControls({
+  onNewCard,
+  isSpeechSupported,
+  isListening,
+  onToggleListen,
+  soundEnabled,
+  onToggleSound,
+}: Props) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       {isSpeechSupported && onToggleListen && (
@@ -32,6 +42,16 @@ export function GameControls({ onNewCard, isSpeechSupported, isListening, onTogg
           {isListening ? 'Stop listening' : 'Start listening'}
         </Button>
       )}
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={onToggleSound}
+        aria-pressed={soundEnabled}
+        aria-label={soundEnabled ? 'Win sound on' : 'Win sound off'}
+        title="Play a sound when you win"
+      >
+        {soundEnabled ? '🔊 Sound on' : '🔇 Sound off'}
+      </Button>
       <Button variant="secondary" onClick={onNewCard}>
         🔄 New Card
       </Button>
