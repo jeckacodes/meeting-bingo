@@ -193,9 +193,9 @@ export function GameBoard({ game, setGame, onWin }: Props) {
             )}
             <button
               onClick={toggleListen}
-              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
             >
-              Enable microphone
+              Start listening
             </button>
           </div>
         )

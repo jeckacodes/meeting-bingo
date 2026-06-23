@@ -15,17 +15,21 @@ export function GameControls({ onNewCard, isSpeechSupported, isListening, onTogg
       {isSpeechSupported && onToggleListen && (
         <Button
           variant={isListening ? 'secondary' : 'primary'}
+          className={cn(
+            !isListening &&
+              'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500',
+          )}
           onClick={onToggleListen}
           aria-pressed={isListening}
         >
           <span
             className={cn(
               'inline-block h-2.5 w-2.5 rounded-full',
-              isListening ? 'bg-red-500 animate-pulse' : 'bg-gray-400',
+              isListening ? 'bg-red-500 animate-pulse' : 'bg-white',
             )}
             aria-hidden="true"
           />
-          {isListening ? 'Stop listening' : 'Enable mic'}
+          {isListening ? 'Stop listening' : 'Start listening'}
         </Button>
       )}
       <Button variant="secondary" onClick={onNewCard}>
